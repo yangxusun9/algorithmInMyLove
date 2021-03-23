@@ -2,6 +2,8 @@ package dataStructure.linkedList.recursion;
 
 import dataStructure.linkedList.ListNode;
 
+import java.util.List;
+
 /**
  * 递归解法
  * @author yangxu
@@ -47,6 +49,10 @@ public class RecursionUtils {
         return listNode;
     }
 
+
+    // * https://leetcode-cn.com/problems/reverse-linked-list-ii/
+    // *给你单链表的头指针 head 和两个整数 left 和 right ，其中 left <= right 。
+    // * 请你反转从位置 left 到位置 right 的链表节点，返回 反转后的链表 。
     /**
      * 反转部分链表
      * @author yangxu
@@ -57,7 +63,7 @@ public class RecursionUtils {
      * @return  dataStructure.linkedList.ListNode
      */
     public static ListNode reverseSection(ListNode head,int m,int n){
-        if(m  ==1){
+        if(m == 1){
             return   reverseN(head,n);
         }
         head.next = reverseSection(head.next,m-1,n-1);
