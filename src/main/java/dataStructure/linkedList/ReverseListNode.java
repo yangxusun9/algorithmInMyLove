@@ -17,16 +17,19 @@ public class ReverseListNode {
         ListNode head = new ListNode(1);
         head.add(2);
         head.add(3);
-        head.add(4);
-        head.add(5);
+        head.add(3);
+        head.add(2);
+        head.add(0);
         travel(head);
         System.out.println("*************");
 
 //        ListNode result = reverseHole(head);
 //        ListNode result = reverseN(head, 3);
 //        ListNode result = RecursionUtils.reverseSection(head, 2,4);
-        ListNode result = IterationUtils.reverseKGroup(head,3);
-        travel(result);
+//        ListNode result = IterationUtils.findMiddle(head);
+//        travel(result);
+        Boolean palindrome = RecursionUtils.isPalindromeBest(head);
+        System.out.println(palindrome);
 
     }
 

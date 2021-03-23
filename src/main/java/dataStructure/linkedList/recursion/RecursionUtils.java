@@ -1,8 +1,7 @@
 package dataStructure.linkedList.recursion;
 
 import dataStructure.linkedList.ListNode;
-
-import java.util.List;
+import dataStructure.linkedList.iteration.IterationUtils;
 
 /**
  * 递归解法
@@ -70,5 +69,56 @@ public class RecursionUtils {
         return head;
     }
 
+    /**
+     * 判断回文链表-后序遍历法
+     * （时间复杂度O(n),空间复杂度O(n)）
+     * @author yangxu
+     * @date 2021/3/23 上午11:57
+     * @param head
+     * @return  dataStructure.linkedList.ListNode
+     */
+    public static Boolean isPalindrome(ListNode head){
+        left =head;
+        return traverseJudgment(head);
+    }
+    private static ListNode left;
+
+    /**
+     * 递归判断链表头节点与尾节点是否相等
+     * @author yangxu
+     * @date 2021/3/23 下午2:38 
+ * @param head   
+ * @return  java.lang.Boolean
+     */
+    public static Boolean traverseJudgment(ListNode head){
+        if (head == null) return true;
+        Boolean result = traverseJudgment(head.next);
+        boolean flag = result && (head.value == left.value);
+        left =left.next;
+        return flag;
+    }
+    
+    /**
+     * 判断回文链表-中节点反转法
+     * 时间复杂度O(n),空间复杂度O(1)
+     * @author yangxu
+     * @date 2021/3/23 下午2:41 
+ * @param head 头节点
+ * @return  null
+     */
+    public static Boolean isPalindromeBest(ListNode head){
+        ListNode middle = IterationUtils.findMiddle(head);
+        ListNode listNode2 = IterationUtils.reverseAll(middle);
+        Boolean flag= true;
+        while (listNode2 != null){
+            if (head.value != listNode2.value){
+                flag = false;
+                return flag;
+            }
+            head = head.next;
+            listNode2 = listNode2.next;
+        }
+        return flag;
+    }
 
 }
