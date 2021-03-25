@@ -1,7 +1,9 @@
 package dataStructure.binaryTree.method;
 
+import com.sun.tools.javac.util.ArrayUtils;
 import dataStructure.binaryTree.bean.TreeNode;
 
+import javax.swing.plaf.ListUI;
 import java.awt.print.Printable;
 
 /**
@@ -103,6 +105,37 @@ public class BinaryTreeUtils {
         }
         p.right = rightNode;
         return root;
+    }
+
+   /**
+    * 根据数组构造最大二叉树
+    * https://leetcode-cn.com/problems/maximum-binary-tree/
+    * @author yangxu
+    * @date 2021/3/25 下午2:24
+ * @param nums
+ * @return  dataStructure.binaryTree.bean.TreeNode
+    */
+   public  static  TreeNode constructMaximumBinaryTree(int[] nums){
+       return buildMaxTreeNode(nums, 0, nums.length - 1);
+   }
+
+    private static TreeNode buildMaxTreeNode(int[] nums, int start, int end) {
+       //base case
+        if (start > end){
+            return null;
+        }
+        int index  = 0;
+        int maxValue = Integer.MIN_VALUE;
+        for (int i = start; i <= end; i++) {
+            if (nums[i] > maxValue){
+                maxValue = nums[i];
+                index = i;
+            }
+        }
+        TreeNode treeNode = new TreeNode(nums[index]);
+        treeNode.left = buildMaxTreeNode(nums,start,index-1);
+        treeNode.right = buildMaxTreeNode(nums,index+1,end);
+        return treeNode;
     }
 
 

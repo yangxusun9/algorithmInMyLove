@@ -23,6 +23,14 @@ public  class BinaryTreeUtilsTest {
         BinaryTreeUtils.flattenToList(root);
         System.out.println("....................");
         BinaryTreeUtils.show(root);
+    }
+
+    @Test
+    public void constructMaximumBinaryTree(){
+        int[] nums = new int[]{1,2,7,4,5};
+//        System.out.println("....................");
+        TreeNode root = BinaryTreeUtils.constructMaximumBinaryTree(nums);
+        BinaryTreeUtils.show(root);
 
     }
 }
