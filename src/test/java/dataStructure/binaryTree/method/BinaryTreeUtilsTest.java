@@ -18,7 +18,10 @@ public  class BinaryTreeUtilsTest {
         TreeNode node3 = new TreeNode(3,new TreeNode(1),new TreeNode(2));
         root.left = node3;
         root.right = node5;
-        BinaryTreeUtils.reverseAll(root);
+//        BinaryTreeUtils.reverseAll(root);
+        BinaryTreeUtils.show(root);
+        BinaryTreeUtils.flattenToList(root);
+        System.out.println("....................");
         BinaryTreeUtils.show(root);
 
     }
