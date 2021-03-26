@@ -138,5 +138,42 @@ public class BinaryTreeUtils {
         return treeNode;
     }
 
+    /**
+     * 从前序与中序遍历序列构造二叉树
+     * https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+     * @author yangxu
+     * @date 2021/3/26 下午2:35
+ * @param preorder
+ * @param inorder
+ * @return  dataStructure.binaryTree.bean.TreeNode
+     */
+    public static TreeNode buildTree(int[] preorder, int[] inorder){
+      return buildTreeWithPreAndIn(preorder, 0, preorder.length - 1,
+                inorder, 0, inorder.length - 1);
+    }
+
+    private static TreeNode buildTreeWithPreAndIn(int[] preorder, int preStart, int preEnd,
+                                                  int[] inorder, int inStart, int inEnd) {
+       //base case
+        if (preStart > preEnd){
+            return null;
+        }
+        TreeNode root = new TreeNode(preorder[preStart]);
+        //找到inorder的根节点下标
+        int index = 0;
+        for (int i = inStart; i < inorder.length; i++) {
+            if (inorder[i] == root.val){
+                index = i;
+            }
+        }
+        //确定preOrder的左子树长度
+        int leftSize = index - inStart;
+        root.left =  buildTreeWithPreAndIn(preorder, preStart+1, preStart + leftSize,
+                inorder, inStart, index-1);
+        root.right = buildTreeWithPreAndIn(preorder,preStart+leftSize+1,preEnd,
+                inorder,index+1,inEnd);
+        return root;
+    }
+
 
 }
