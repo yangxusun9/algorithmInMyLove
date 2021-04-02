@@ -2,9 +2,13 @@ package dataStructure.binaryTree.method;
 
 import com.sun.tools.javac.util.ArrayUtils;
 import dataStructure.binaryTree.bean.TreeNode;
+import javafx.scene.transform.Rotate;
 
 import javax.swing.plaf.ListUI;
 import java.awt.print.Printable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author yangxu
@@ -173,6 +177,55 @@ public class BinaryTreeUtils {
         root.right = buildTreeWithPreAndIn(preorder,preStart+leftSize+1,preEnd,
                 inorder,index+1,inEnd);
         return root;
+    }
+
+    /**
+     * 寻找重复子树
+     * https://leetcode-cn.com/problems/find-duplicate-subtrees/solution/
+     * @author yangxu
+     * @date 2021/3/27 上午11:06
+ * @param root
+ * @return  java.util.List<dataStructure.binaryTree.bean.TreeNode>
+     */
+    public static List<TreeNode> findDuplicateSubtrees(TreeNode root){
+        HashMap<String, Integer> roots = new HashMap<>();
+        List<TreeNode> duplicates = new ArrayList<>();
+        buildTreeToString(root,roots,duplicates);
+        return duplicates;
+    }
+
+    private static String buildTreeToString(TreeNode root, HashMap<String, Integer> roots, List<TreeNode> duplicates) {
+        if (root ==null){
+            return null;
+        }
+        String left = buildTreeToString(root.left, roots, duplicates);
+        String right = buildTreeToString(root.right, roots, duplicates);
+        //将根子树序列化为字符串来做比较
+        String currentRoots = left+","+right+","+root.val;
+        Integer nums = roots.getOrDefault(currentRoots, 0);
+        if (nums ==1){
+            duplicates.add(root);
+        }
+        roots.put(currentRoots,nums+1);
+        return currentRoots;
+    }
+
+    public static TreeNode convertBST(TreeNode root) {
+        int sum = 0;
+        traverseBST(root,sum);
+        return root;
+    }
+
+    private static void traverseBST(TreeNode root,Integer sum) {
+        if (root == null){
+            return ;
+        }
+        traverseBST(root.right,sum);
+        root.val = sum;
+        sum += root.val;
+        traverseBST(root.left,sum);
+
+
     }
 
 
