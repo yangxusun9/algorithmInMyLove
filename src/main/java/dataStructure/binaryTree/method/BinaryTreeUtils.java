@@ -1,11 +1,7 @@
 package dataStructure.binaryTree.method;
 
-import com.sun.tools.javac.util.ArrayUtils;
 import dataStructure.binaryTree.bean.TreeNode;
-import javafx.scene.transform.Rotate;
 
-import javax.swing.plaf.ListUI;
-import java.awt.print.Printable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -225,7 +221,86 @@ public class BinaryTreeUtils {
         sum += root.val;
         traverseBST(root.left,sum);
 
+    }
+    /**
+     * 判断BST 的合法性
+     * @author yangxu
+     * @date 2021/4/6 下午6:43 
+ * @param root   
+ * @return  boolean
+     */
+    public static boolean isValidBST(TreeNode root) {
+        return isValidBST(root,null,null);
+    }
 
+    private static boolean isValidBST(TreeNode root, TreeNode min, TreeNode max) {
+        if (root == null){
+            return true;
+        }
+        if (min !=null && root.val >= max.val)return false;
+        if (max !=null && root.val <= min.val)return false;
+        //左子树要求所有节点都要小于root
+       return isValidBST(root.left,min,root) && 
+                isValidBST(root.right,root,max);
+    }
+
+    /**
+     * BST遍历框架
+     * @author yangxu
+     * @date 2021/4/7 上午9:51 
+ * @param root  
+ * @param target   
+ * @return  boolean
+     */
+    public static boolean isInBST(TreeNode root,Integer target){
+        if (root == null)return false;
+        if (root.val == target)return true;
+        if(root.val>target)return isInBST(root.left,target);
+        return isInBST(root.right,target);
+
+    }
+
+
+    /**
+     * BST中删除一个节点
+     * https://leetcode-cn.com/problems/delete-node-in-a-bst/
+     * @author yangxu
+     * @date 2021/4/7 下午4:12
+ * @param root
+ * @param target
+ * @return  dataStructure.binaryTree.bean.TreeNode
+     */
+    public static TreeNode deleteNode(TreeNode root, Integer target){
+        if (root ==null){
+            return null;
+        }
+        if (root.val == target){
+        //case1 root为叶节点，无子节点，直接替换
+        if (root.left == null && root.right == null){
+            return null;
+        }
+        //case2 root 为非叶节点，但只要一个子树，需要将子树替换成当前节点
+            if (root.right == null)return root.left;
+            if (root.left == null) return  root.right;
+            //case3 root有俩个子树，需要用左子树最大值替换root
+            TreeNode max = getMax(root.left);
+            root.val = max.val;
+                //删除最大值，实现替换的效果
+           root.left = deleteNode(root.left, max.val);
+            return root;
+        }else if (root.val<target){
+          root.right = deleteNode(root.right,target);
+        }else if (root.val > target){
+            root.left =  deleteNode(root.left,target);
+        }
+        return root;
+    }
+
+    private static TreeNode getMax(TreeNode root) {
+        while (root.right != null){
+            root = root.right;
+        }
+        return root;
     }
 
 
