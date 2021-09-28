@@ -12,6 +12,7 @@ import java.util.List;
  * @date 2021/3/24 上午10:39
  */
 public class BinaryTreeUtils {
+
     /**
      * 反转二叉树
      * @author yangxu
@@ -206,6 +207,13 @@ public class BinaryTreeUtils {
         return currentRoots;
     }
 
+    /**
+     * 二叉搜索树转化为累加树
+     * @author yangxu
+     * @date 2021/9/28 下午12:01
+ * @param root
+ * @return  dataStructure.binaryTree.bean.TreeNode
+     */
     public static TreeNode convertBST(TreeNode root) {
         int sum = 0;
         traverseBST(root,sum);
@@ -224,24 +232,24 @@ public class BinaryTreeUtils {
     }
     /**
      * 判断BST 的合法性
+     * https://leetcode-cn.com/problems/validate-binary-search-tree/solution/yan-zheng-er-cha-sou-suo-shu-by-leetcode-solution/
      * @author yangxu
      * @date 2021/4/6 下午6:43 
  * @param root   
  * @return  boolean
      */
-    public static boolean isValidBST(TreeNode root) {
-        return isValidBST(root,null,null);
+    public boolean isValidBST(TreeNode root) {
+        return isValidBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
 
-    private static boolean isValidBST(TreeNode root, TreeNode min, TreeNode max) {
-        if (root == null){
+    public boolean isValidBST(TreeNode node, long lower, long upper) {
+        if (node == null) {
             return true;
         }
-        if (min !=null && root.val >= max.val)return false;
-        if (max !=null && root.val <= min.val)return false;
-        //左子树要求所有节点都要小于root
-       return isValidBST(root.left,min,root) && 
-                isValidBST(root.right,root,max);
+        if (node.val <= lower || node.val >= upper) {
+            return false;
+        }
+        return isValidBST(node.left, lower, node.val) && isValidBST(node.right, node.val, upper);
     }
 
     /**
@@ -262,7 +270,7 @@ public class BinaryTreeUtils {
 
 
     /**
-     * BST中删除一个节点
+     * 二叉搜索树中删除一个节点
      * https://leetcode-cn.com/problems/delete-node-in-a-bst/
      * @author yangxu
      * @date 2021/4/7 下午4:12

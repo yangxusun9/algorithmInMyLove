@@ -1,5 +1,6 @@
 package dataStructure.array.sort;
 
+import java.util.LinkedList;
 import java.util.Random;
 
 /**
@@ -10,15 +11,15 @@ import java.util.Random;
 public class QuicklySort {
     public static void main(String[] args) {
         int[] nums = new int[]{5,2,3,1};
-        int[] ints = new QuicklySort().quickSort(nums, 0, nums.length - 1);
-        for (int anInt : ints) {
+         new QuicklySort().nonRecQuickSort(nums, 0, nums.length - 1);
+        for (int anInt : nums) {
             System.out.print(anInt);
         }
 
     }
 
     /**
-     * 快排
+     * 递归快排
      * @author yangxu
      * @date 2021/6/30 下午3:00
  * @param nums  带排序
@@ -26,47 +27,31 @@ public class QuicklySort {
  * @param r   右下标
  * @return  int[]
      */
-    public int[] quickSort(int[] nums,int l ,int r){
+    public void quickSort(int[] nums,int l ,int r){
         //base case
         if (l >=  r){
-            return nums;
+            return ;
         }
-        //随机选取中轴，然后与左端点互换
-            //new Random().nextInt(65)+ 64 生产范围是[64,128]
-        int i = new Random().nextInt(r - l + 1) + l;
-        swap(nums,l,i);
-        int pivot = nums[l];
+        int p = partition(nums, l, r);
+        quickSort(nums,l,p-1);
+        quickSort(nums,p+1,r);
 
-        int start = l;
-        int end = r;
+    }
 
-
-        //左右指针分别移动
-        while (l<r){
-            //先移动右指针，直到找到比中轴值小的数
-            while ( l < r && nums[r] >= pivot){
-                r --;
-            }
-            //再移动左指针，直到找到比中轴值大的数
-            while ( l < r && nums[l] < pivot){
-                l ++;
-            }
-            if (l < r){
-                swap(nums,l,r);
-                l ++;
-                r --;
+    private int partition(int[] nums, int l, int r) {
+        // 选取中轴值
+        int pivot = (new Random().nextInt(r - l + 1)) + l;
+        swap(nums,pivot,r);
+        //起始点
+        int p = l;
+        for (int i = l; i <= r; i++) {
+            //如果小于中轴值，就置换
+            if (nums[i]<=nums[r]){
+                swap(nums,i,p);
+                p++;
             }
         }
-        //循环结束后再判断中间值是否大于pivot，大于的话需要把右指针左移一位再置换
-        if ( l ==r && pivot < nums[r]){
-            r --;
-        }
-        //置换中轴值
-        swap(nums,start,r);
-        //递归排序左右俩边
-        quickSort(nums,start,r-1);
-        quickSort(nums,r+1,end);
-       return nums;
+        return p-1;
     }
 
     /**
@@ -82,4 +67,27 @@ public class QuicklySort {
         nums[l] = nums[i];
         nums[i] = tmp;
     }
+
+    //非递归实现快速排序
+    public  void nonRecQuickSort(int[] a,int start,int end) {
+        LinkedList<Integer> stack = new LinkedList<Integer>();  //用栈模拟
+        if(start < end) {
+            stack.push(end);
+            stack.push(start);
+            while(!stack.isEmpty()) {
+                int l = stack.pop();
+                int r = stack.pop();
+                int index = partition(a, l, r);
+                if(l < index - 1) {
+                    stack.push(index-1);
+                    stack.push(l);
+                }
+                if(r > index + 1) {
+                    stack.push(r);
+                    stack.push(index+1);
+                }
+            }
+        }
+    }
+
 }

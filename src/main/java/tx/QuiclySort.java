@@ -12,45 +12,33 @@ import java.util.Random;
 public class QuiclySort {
     public static void main(String[] args) {
         int[] nums = new int[]{5,2,3,1};
-        int[] ints = new QuiclySort().sort(nums, 0, nums.length - 1);
-        for (int anInt : ints) {
-            System.out.println(anInt);
+       new QuiclySort().qSort(nums, 0, nums.length - 1);
+        for (int anInt : nums) {
+            System.out.print(anInt);
         }
     }
-    public int[] sort(int[] nums,int l ,int r){
-        //base case
-        if (l > r ) return nums;
-        //选取中轴值
-        int i = new Random().nextInt(r - l + 1) + l;
-        swap(nums,l,i);
-        int pivot = nums[l];
-        int start = l;
-        int end  = r;
+   private void qSort(int [] nums,int l ,int r){
+        if (l > r) return;
+       int p =  partition(nums,l,r);
+       qSort(nums,l,p -1 );
+       qSort(nums,p+1,r);
+   }
 
-        //开始移动指针
-        while (l < r){
-            while (l < r && nums[r] > pivot){
-                r --;
-            }
-            while (l < r && nums[l] <= pivot){
-                l ++;
-            }
-            if (l < r){
-                swap(nums,l,r);
-                l ++;
-                r--;
+    private int partition(int[] nums, int l, int r) {
+        //抽取中轴值
+        int pi = new Random().nextInt(r - l + 1) + l;
+        int pivot = nums[pi];
+        //置换
+        swap(nums,pi,r);
+        int p = l;
+        //比较并置换
+        for (int i = l; i <= r; i++) {
+            if (nums[i] <= pivot){
+                swap(nums,p,i);
+                p++;
             }
         }
-        if ( l == r && nums[r] >pivot){
-            l -- ;
-        }
-        swap(nums,l,start);
-
-        sort(nums,start,l-1);
-        sort(nums,l+1,end);
-
-return nums;
-
+        return p-1;
     }
 
     /**
